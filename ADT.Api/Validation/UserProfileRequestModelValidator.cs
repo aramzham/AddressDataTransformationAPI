@@ -10,14 +10,15 @@ public class UserProfileRequestModelValidator : AbstractValidator<UserProfileReq
     
     public UserProfileRequestModelValidator()
     {
-        RuleFor(x => x.FirstName).MinimumLength(3);
-        RuleFor(x => x.LastName).MinimumLength(3);
-        RuleFor(x => x.EmailAddress).EmailAddress();
-        RuleFor(x => x.PhoneNumber).Must(BeFormatted);
+        RuleFor(x => x.FirstName).NotNull().MinimumLength(3).WithMessage("{PropertyName} must have at least {MinLength} characters");
+        RuleFor(x => x.LastName).NotNull().MinimumLength(3).WithMessage("{PropertyName} must have at least {MinLength} characters");
+        RuleFor(x => x.EmailAddress).NotNull().EmailAddress().WithMessage("Please specify a valid email address");
+        RuleFor(x => x.PhoneNumber).NotNull().Must(BeFormatted).WithMessage("{PropertyName} must be in '(999)999-9999' format");
+        RuleFor(x => x.Address).NotEmpty().WithMessage("The address must not be empty");
     }
 
     private bool BeFormatted(string arg)
     {
-        return _phoneNumberRegex.IsMatch(arg);
+        return arg != null && _phoneNumberRegex.IsMatch(arg);
     }
 }
