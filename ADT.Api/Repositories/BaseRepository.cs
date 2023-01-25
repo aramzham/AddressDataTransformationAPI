@@ -10,4 +10,9 @@ public class BaseRepository
     {
         _context = context;
     }
+
+    public Task SaveChanges()
+    {
+        return _context.SaveChangesAsync();
+    }
 }

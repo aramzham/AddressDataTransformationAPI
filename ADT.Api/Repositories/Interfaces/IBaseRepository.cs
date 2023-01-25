@@ -2,5 +2,5 @@
 
 public interface IBaseRepository
 {
-    
+    Task SaveChanges();
 }
