@@ -7,8 +7,7 @@ public class AdtContext : DbContext
 {
     public DbSet<UserProfile> UserProfiles { get; set; }
     
-    protected override void OnConfiguring
-        (DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseInMemoryDatabase(databaseName: "AdtDb");
     }

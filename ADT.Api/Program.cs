@@ -8,6 +8,7 @@ using ADT.Api.Repositories.Interfaces;
 using ADT.Api.Validation;
 using FluentValidation;
 using MapsterMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,17 @@ app.MapGet("/userProfile/{id:guid}", async (Guid id, IUserProfileRepository repo
         return Results.NotFound();
 
     var response = mapper.Map<UserProfileResponseModel>(userProfile);
+
+    return Results.Ok(response);
+});
+
+app.MapGet("/userProfile", async (IUserProfileRepository repository, IMapper mapper) =>
+{
+    var profiles = await repository.GetAll();
+    if (!profiles.Any())
+        return Results.NotFound();
+
+    var response = mapper.Map<IEnumerable<UserProfileResponseModel>>(profiles);
 
     return Results.Ok(response);
 });
