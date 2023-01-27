@@ -12,7 +12,7 @@ public class UserProfileRequestModelValidator : AbstractValidator<UserProfileReq
     {
         RuleFor(x => x.FirstName).NotNull().MinimumLength(3).WithMessage("{PropertyName} must have at least {MinLength} characters");
         RuleFor(x => x.LastName).NotNull().MinimumLength(3).WithMessage("{PropertyName} must have at least {MinLength} characters");
-        RuleFor(x => x.DateOfBirth).NotNull().WithMessage("{PropertyName} must not be empty");
+        RuleFor(x => x.DateOfBirth).NotEmpty().WithMessage("{PropertyName} must not be empty");
         RuleFor(x => x.EmailAddress).NotNull().EmailAddress().WithMessage("Please specify a valid email address");
         RuleFor(x => x.PhoneNumber).NotNull().Must(BeFormatted).WithMessage("{PropertyName} must be in '(999)999-9999' format");
         RuleFor(x => x.Address).NotEmpty().WithMessage("{PropertyName} must not be empty");
