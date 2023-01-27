@@ -1,4 +1,5 @@
-﻿using ADT.Api.Data;
+﻿using ADT.Api.AddressDataTransformer;
+using ADT.Api.Data;
 using ADT.Api.Models.Domain;
 using ADT.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +8,18 @@ namespace ADT.Api.Repositories;
 
 public class UserProfileRepository : BaseRepository, IUserProfileRepository
 {
-    public UserProfileRepository(AdtContext context) : base(context)
+    private readonly IAddressDataTransformingStrategy _addressDataTransformingStrategy;
+
+    public UserProfileRepository(AdtContext context, IAddressDataTransformingStrategy addressDataTransformingStrategy) : base(context)
     {
+        _addressDataTransformingStrategy = addressDataTransformingStrategy;
     }
     
     public async Task<UserProfile> Add(UserProfile userProfile)
     {
+        // this should have been put to some higher business logic
+        userProfile.Address = _addressDataTransformingStrategy.Transform(userProfile.Address);
+        
         var entityEntry = await _context.AddAsync(userProfile);
         return entityEntry.Entity;
     }

@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using ADT.Api.AddressDataTransformer;
 using ADT.Api.Validation;
 using Mapster;
 using MapsterMapper;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ADT.Api.Extensions;
 
@@ -16,5 +18,20 @@ public static class ServiceExtensions
         serviceCollection.AddSingleton<IMapper>(_ => new Mapper(typeAdapterConfig));
 
         return serviceCollection;
+    }
+
+    public static IAddressDataTransformingStrategy AddAddressDataTransformingStrategy(this IServiceCollection serviceCollection)
+    {
+        var strategy = new AddressDataTransformingStrategy();
+        serviceCollection.AddSingleton<IAddressDataTransformingStrategy>(_ => strategy);
+
+        return strategy;
+    }
+
+    public static IAddressDataTransformingStrategy AddTransformer<T>(this IAddressDataTransformingStrategy strategy) where T : IAddressDataTransformer
+    {
+        strategy.AddType(typeof(T));
+
+        return strategy;
     }
 }

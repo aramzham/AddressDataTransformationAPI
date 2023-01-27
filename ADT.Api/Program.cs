@@ -1,3 +1,4 @@
+using ADT.Api.AddressDataTransformer;
 using ADT.Api.Data;
 using ADT.Api.Extensions;
 using ADT.Api.Models.Domain;
@@ -8,12 +9,18 @@ using ADT.Api.Repositories.Interfaces;
 using ADT.Api.Validation;
 using FluentValidation;
 using MapsterMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileRequestModelValidator>();
 builder.Services.AddMapster();
+
+// address data transformers
+builder.Services.AddAddressDataTransformingStrategy()
+                .AddTransformer<SymbolsToSpaceTransformer>()
+                .AddTransformer<RemoveNumberDesignationTransformer>()
+                .AddTransformer<StreetDesignationsTransformer>()
+                .AddTransformer<ToUpperCaseTransformer>();
 
 // repositories
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
