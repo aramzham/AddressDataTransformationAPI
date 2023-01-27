@@ -3,6 +3,7 @@ using ADT.Api.Models.Domain;
 using ADT.Api.Models.Request;
 using ADT.Api.Models.Response;
 using ADT.Api.Repositories.Interfaces;
+using Asp.Versioning;
 using FluentValidation;
 using MapsterMapper;
 
@@ -11,10 +12,18 @@ namespace ADT.Api.Extensions;
 
 public static class WebApplicationExtensions
 {
+    private static ApiVersion _v1 = new(1.0);
+    private static ApiVersion _v2 = new(2.0);
+    
     public static void MapUserProfileEndpoints(this WebApplication app)
     {
-        app.MapPost("/userProfile", Add);
-        app.MapGet("/userProfile/{id:guid}", GetById);
+        // 1. in this scenario you'll need to call /userProfile?api-version=1.0 to make a POST request and with that url GetById won't work because it has a different version
+        // 1a. if you don't want to specify api-version query parameter, use options.AssumeDefaultVersionWhenUnspecified = true; when building services in Program.cs
+        var versionSet = app.NewApiVersionSet().HasApiVersion(_v1).HasApiVersion(_v2).ReportApiVersions().Build();
+        // use .ReportApiVersions() to return back available versions in api-supported-versions header
+        
+        app.MapPost("/userProfile", Add).WithApiVersionSet(versionSet).MapToApiVersion(_v1);
+        app.MapGet("/userProfile/{id:guid}", GetById).WithApiVersionSet(versionSet).MapToApiVersion(_v2);
         app.MapGet("/userProfile", GetAll);
     }
     
