@@ -18,9 +18,7 @@ builder.Services.AddMapster();
 // address data transformers
 builder.Services.AddAddressDataTransformingStrategy()
                 .AddTransformer<SymbolsToSpaceTransformer>()
-                .AddTransformer<RemoveNumberDesignationTransformer>()
-                .AddTransformer<StreetDesignationsTransformer>()
-                .AddTransformer<ToUpperCaseTransformer>();
+                .AddTransformer<StreetDesignationsTransformer>();
 
 // repositories
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
