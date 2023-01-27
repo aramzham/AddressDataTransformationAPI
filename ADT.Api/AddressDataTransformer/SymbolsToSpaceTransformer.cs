@@ -1,10 +1,10 @@
-﻿using System.Text;
+using System.Text;
 
 namespace ADT.Api.AddressDataTransformer;
 
 public class SymbolsToSpaceTransformer : IAddressDataTransformer
 {
-    private static readonly char[] _symbolsToRemove = { '.', '-', ',' };
+    private static readonly char[] _symbolsToRemove = { '.', '-', ',', '#' };
 
     public string Transform(string input)
     {
@@ -13,11 +13,10 @@ public class SymbolsToSpaceTransformer : IAddressDataTransformer
 
         foreach (var c in input)
         {
-            if(isPreviousCharacterSpace && (Array.IndexOf(_symbolsToRemove, c) > -1 || char.IsWhiteSpace(c)))
+            if ((isPreviousCharacterSpace && char.IsWhiteSpace(c)) || Array.IndexOf(_symbolsToRemove, c) > -1)
                 continue;
-            
-            if (char.IsWhiteSpace(c))
-                isPreviousCharacterSpace = true;
+
+            isPreviousCharacterSpace = char.IsWhiteSpace(c);
 
             sb.Append(c);
         }
