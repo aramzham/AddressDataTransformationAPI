@@ -1,4 +1,4 @@
-﻿namespace ADT.Api.AddressDataTransformer;
+namespace ADT.Api.AddressDataTransformer;
 
 public class StreetDesignationsTransformer : IAddressDataTransformer
 {
@@ -6,6 +6,7 @@ public class StreetDesignationsTransformer : IAddressDataTransformer
     {
         { "STREET", "ST" },
         { "AVENUE", "AVE" },
+        { "AVE", "AVE" },
         { "ROAD", "RD" },
         { "BOULEVARD", "BLVD" },
         { "LANE", "LN" },
@@ -23,20 +24,36 @@ public class StreetDesignationsTransformer : IAddressDataTransformer
     public string Transform(string input)
     {
         var splitBySpace = input.Split();
+        var list = new List<string>();
 
         for (int i = 0; i < splitBySpace.Length; i++)
         {
-            if (IsDirection(splitBySpace[i]))
+            var upperCase = splitBySpace[i].ToUpperInvariant();
+
+            if (IsDirection(upperCase))
+                list.Add(_directionAbbreviations[upperCase]);
+            else if (IsNumber(upperCase) && i != splitBySpace.Length - 1)
             {
-                splitBySpace[i] = _directionAbbreviations[splitBySpace[i]];
-                if (NextIsNumber(splitBySpace, i) && SecondNextIsStreet(splitBySpace, i))
-                    splitBySpace[i] = TransformNumber(splitBySpace[i]);
+                var nextUpper = splitBySpace[i + 1].ToUpperInvariant();
+                if (IsStreet(nextUpper))
+                {
+                    list.Add(TransformNumber(splitBySpace[i]));
+                    HandleStreet(i + 1 == splitBySpace.Length - 1, nextUpper, list, splitBySpace);
+                    break;
+                }
+
+                list.Add(upperCase);
             }
-            else if (IsStreet(splitBySpace[i]))
-                splitBySpace[i] = _streetAbbreviations[splitBySpace[i]];
+            else if (IsStreet(upperCase))
+            {
+                HandleStreet(i == splitBySpace.Length - 1, upperCase, list, splitBySpace);
+                break;
+            }
+            else
+                list.Add(upperCase);
         }
 
-        return string.Join(' ', splitBySpace);
+        return string.Join(' ', list);
     }
 
     private string TransformNumber(string s)
@@ -50,11 +67,19 @@ public class StreetDesignationsTransformer : IAddressDataTransformer
         };
     }
 
-    private bool IsStreet(string s) => _streetAbbreviations.ContainsKey(s.ToUpperInvariant());
-    
-    private bool IsDirection(string s) => _directionAbbreviations.ContainsKey(s.ToUpperInvariant());
+    private bool IsStreet(string s) => _streetAbbreviations.ContainsKey(s);
 
-    private bool NextIsNumber(string[] arr, int index) => index + 1 < arr.Length && arr[index + 1].All(char.IsNumber);
+    private bool IsDirection(string s) => _directionAbbreviations.ContainsKey(s);
 
-    private bool SecondNextIsStreet(string[] arr, int index) => index + 2 < arr.Length && IsStreet(arr[index + 2]);
+    private bool IsNumber(string s) => s.All(char.IsNumber);
+
+    private void HandleStreet(bool isEnd, string street, ICollection<string> list, IReadOnlyList<string> splitBySpace)
+    {
+        list.Add(_streetAbbreviations[street]);
+
+        if (isEnd)
+            return;
+
+        list.Add(splitBySpace[^1].ToUpperInvariant());
+    }
 }
