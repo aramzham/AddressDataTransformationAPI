@@ -8,3 +8,5 @@ Tech stack:
 - Minimal API .net 7.0
 - <a href="https://www.nuget.org/packages/Asp.Versioning.Http">Api.Versioning.Http<a/> for api versioning :smile:
 - unit tests (xUnit, Moq, AutoFixture)
+- <a href="https://www.nuget.org/packages/Mapster/">Mapster</a> for mapping
+- <a href="https://github.com/Fody/MethodTimer">MethodTimer.Fody</a> for method execution time measuring
