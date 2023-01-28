@@ -6,6 +6,7 @@ using ADT.Api.Repositories.Interfaces;
 using Asp.Versioning;
 using FluentValidation;
 using MapsterMapper;
+using MethodTimer;
 
 [assembly: InternalsVisibleTo("ADT.Api.Tests")]
 namespace ADT.Api.Extensions;
@@ -27,6 +28,8 @@ public static class WebApplicationExtensions
         app.MapGet("/userProfile", GetAll);
     }
     
+    [Time]
+    // [Time("Called with '{parameterName}' parameter")]
     internal static async Task<IResult> Add(IValidator<UserProfileRequestModel> validator, UserProfileRequestModel requestModel, IUserProfileRepository repository, IMapper mapper)
     {
         var validationResult = await validator.ValidateAsync(requestModel);

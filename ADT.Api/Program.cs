@@ -1,6 +1,7 @@
 using ADT.Api.AddressDataTransformer;
 using ADT.Api.Data;
 using ADT.Api.Extensions;
+using ADT.Api.Logging;
 using ADT.Api.Repositories;
 using ADT.Api.Repositories.Interfaces;
 using ADT.Api.Validation;
@@ -31,6 +32,8 @@ builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddDbContext<AdtContext>();
 
 var app = builder.Build();
+
+MethodTimeLogger.Logger = app.Logger;
 
 app.MapUserProfileEndpoints();
 
