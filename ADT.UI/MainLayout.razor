@@ -1,0 +1,56 @@
+﻿@inherits LayoutComponentBase
+
+<Layout Sider>
+    <LayoutSider>
+        <LayoutSiderContent>
+            <Bar Mode="BarMode.VerticalInline"
+                 CollapseMode="BarCollapseMode.Small"
+                 Breakpoint="Breakpoint.Desktop"
+                 NavigationBreakpoint="Breakpoint.Tablet"
+                 ThemeContrast="ThemeContrast.Dark">
+                <BarBrand>
+                    <BarItem>
+                        <BarLink To="/">
+                            <BarIcon IconName="IconName.Home"/>
+                            Home
+                        </BarLink>
+                    </BarItem>
+                </BarBrand>
+                <BarMenu>
+                    <BarStart>
+                        <BarItem>
+                            <BarLink To="/form">
+                                <BarIcon IconName="IconName.Add"/>
+                                Input form
+                            </BarLink>
+                        </BarItem>
+                        <BarItem>
+                            <BarLink To="/profiles">
+                                <BarIcon IconName="IconName.Archive"/>
+                                All users
+                            </BarLink>
+                        </BarItem>
+                        <BarItem>
+                            <BarLink To="/author">
+                                <BarIcon IconName="IconName.Code"/>
+                                Author
+                            </BarLink>
+                        </BarItem>
+                    </BarStart>
+                </BarMenu>
+            </Bar>
+        </LayoutSiderContent>
+    </LayoutSider>
+    <Layout>
+        <LayoutHeader Fixed>
+            <div id="header">
+                Address data transformator
+            </div>
+        </LayoutHeader>
+        <LayoutContent Float="Float.End">
+            <main>
+                @Body
+            </main>
+        </LayoutContent>
+    </Layout>
+</Layout>

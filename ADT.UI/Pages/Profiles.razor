@@ -1,0 +1,32 @@
+﻿@page "/profiles"
+@inherits ProfilesBase
+
+<Table Bordered Striped Hoverable>
+    <TableHeader ThemeContrast="ThemeContrast.Dark">
+        <TableRow>
+            <TableHeaderCell>#</TableHeaderCell>
+            <TableHeaderCell>First name</TableHeaderCell>
+            <TableHeaderCell>Last name</TableHeaderCell>
+            <TableHeaderCell>Date of birth</TableHeaderCell>
+            <TableHeaderCell>Full name</TableHeaderCell>
+            <TableHeaderCell>Email address</TableHeaderCell>
+            <TableHeaderCell>Phone number</TableHeaderCell>
+            <TableHeaderCell>Address</TableHeaderCell>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        @foreach (var profile in _profiles)
+        {
+            <TableRow>
+                <TableRowHeader>1</TableRowHeader>
+                <TableRowCell>@profile.FirstName</TableRowCell>
+                <TableRowCell>@profile.LastName</TableRowCell>
+                <TableRowCell>@profile.DateOfBirth.ToString("yyyy-MM-dd")</TableRowCell>
+                <TableRowCell>@profile.FullName</TableRowCell>
+                <TableRowCell>@profile.EmailAddress</TableRowCell>
+                <TableRowCell>@profile.PhoneNumber</TableRowCell>
+                <TableRowCell>@profile.Address</TableRowCell>
+            </TableRow>
+        }
+    </TableBody>
+</Table>

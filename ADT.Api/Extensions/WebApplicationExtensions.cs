@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using ADT.Api.Models.Domain;
-using ADT.Api.Models.Request;
-using ADT.Api.Models.Response;
 using ADT.Api.Repositories.Interfaces;
+using ADT.Common.Models.Request;
+using ADT.Common.Models.Response;
 using Asp.Versioning;
 using FluentValidation;
 using MapsterMapper;

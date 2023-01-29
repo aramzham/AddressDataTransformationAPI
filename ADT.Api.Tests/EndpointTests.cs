@@ -1,8 +1,8 @@
 ﻿using ADT.Api.Extensions;
 using ADT.Api.Models.Domain;
-using ADT.Api.Models.Request;
-using ADT.Api.Models.Response;
 using ADT.Api.Repositories.Interfaces;
+using ADT.Common.Models.Request;
+using ADT.Common.Models.Response;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using FluentAssertions;

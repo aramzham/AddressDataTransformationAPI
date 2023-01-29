@@ -1,5 +1,5 @@
 ﻿using ADT.Api.Models.Domain;
-using ADT.Api.Models.Request;
+using ADT.Common.Models.Request;
 using Mapster;
 
 namespace ADT.Api.Mapping;

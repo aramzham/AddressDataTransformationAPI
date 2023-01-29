@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using ADT.Api.Models.Request;
+using ADT.Common.Models.Request;
 using FluentValidation;
 
 namespace ADT.Api.Validation;

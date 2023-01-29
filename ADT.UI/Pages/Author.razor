@@ -1,0 +1,22 @@
+﻿@page "/author"
+
+<div style="width: 50%">
+    <Carousel @bind-SelectedSlide="@selectedSlide">
+        <CarouselSlide Name="1">
+            <Image Source="img/1.jpg" Text="Lights image" Display="Display.Block" Width="Width.Is100"/>
+        </CarouselSlide>
+        <CarouselSlide Name="2">
+            <Image Source="img/2.jpg" Text="Keyboard image" Display="Display.Block" Width="Width.Is100"/>
+        </CarouselSlide>
+        <CarouselSlide Name="3">
+            <Image Source="img/3.jpg" Text="Road image" Display="Display.Block" Width="Width.Is100"/>
+        </CarouselSlide>
+        <CarouselSlide Name="4">
+            <Image Source="img/4.jpg" Text="Yaxshi" Display="Display.Block" Width="Width.Is100"/>
+        </CarouselSlide>
+    </Carousel>
+</div>
+
+@code{
+    private string selectedSlide = "2";
+}

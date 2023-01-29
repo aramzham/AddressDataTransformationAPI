@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADT.Api", "ADT.Api\ADT.Api.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADT.Api.Tests", "ADT.Api.Tests\ADT.Api.Tests.csproj", "{F99BA8D5-71B7-43B7-BB43-70058E0C55A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADT.UI", "ADT.UI\ADT.UI.csproj", "{052E7906-9914-4FF2-8B5D-67523EF93FA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADT.Common", "ADT.Common\ADT.Common.csproj", "{67416859-6AD6-4DED-BA3E-5FF929C56A61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{F99BA8D5-71B7-43B7-BB43-70058E0C55A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99BA8D5-71B7-43B7-BB43-70058E0C55A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F99BA8D5-71B7-43B7-BB43-70058E0C55A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{052E7906-9914-4FF2-8B5D-67523EF93FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{052E7906-9914-4FF2-8B5D-67523EF93FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{052E7906-9914-4FF2-8B5D-67523EF93FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{052E7906-9914-4FF2-8B5D-67523EF93FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67416859-6AD6-4DED-BA3E-5FF929C56A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67416859-6AD6-4DED-BA3E-5FF929C56A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67416859-6AD6-4DED-BA3E-5FF929C56A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67416859-6AD6-4DED-BA3E-5FF929C56A61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
