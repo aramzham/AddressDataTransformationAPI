@@ -8,13 +8,14 @@ namespace ADT.UI.Pages;
 
 public class ProfileInputFormBase : ComponentBase
 {
-    protected DatePicker<DateOnly?> _datePicker;
+    protected DatePicker<DateTime> _datePicker;
     protected bool _isLoading;
-    protected UserProfileRequestModel _requestModel = new(null, null, DateOnly.MaxValue, null, null, null);
     private readonly Regex _emailValidationRegex = new("^[a-z0-9]+[\\._]?[a-z0-9]+[@]\\w+[.]\\w{2,3}$", RegexOptions.Compiled);
     private readonly Regex _phoneValidationRegex = new(@"^\(\d{3}\)\d{3}-\d{4}$", RegexOptions.Compiled);
 
     [Inject] public IUserProfileService UserProfileService { get; set; }
+    public UserProfileRequestModel RequestModel { get; set; } = new();
+    public Validations ValidationsRef { get; set; }
 
     static void Validate(ValidatorEventArgs e, Regex regex)
     {
@@ -33,10 +34,15 @@ public class ProfileInputFormBase : ComponentBase
 
     protected async Task OnSubmitClicked()
     {
-        _isLoading = true;
+        if (await ValidationsRef.ValidateAll())
+        {
+            _isLoading = true;
 
-        await UserProfileService.Add(_requestModel);
+            await UserProfileService.Add(RequestModel);
 
-        _isLoading = false;
+            await ValidationsRef.ClearAll();
+            
+            _isLoading = false;
+        }
     }
 }

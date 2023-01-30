@@ -1,15 +1,15 @@
 ﻿@page "/form"
 @inherits ProfileInputFormBase
 
-<Card>
-    <CardBody>
-        <Form>
-            <Field Horizontal>
-                <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">First name</FieldLabel>
-                <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+<Row>
+    <Column>
+        <Validations ValidateOnLoad="false" Model="@RequestModel" Mode="ValidationMode.Auto" @ref="ValidationsRef">
+            <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>First name</FieldLabel>
+                <FieldBody >
                     <Validation Validator="ValidationRule.IsNotEmpty">
                         @* <TextEdit Placeholder="Enter first name"> *@
-                        <TextEdit>
+                        <TextEdit @bind-Text="@RequestModel.FirstName">
                             <Feedback>
                                 <ValidationSuccess>First name is good.</ValidationSuccess>
                                 <ValidationError>Enter valid first name!</ValidationError>
@@ -18,11 +18,11 @@
                     </Validation>
                 </FieldBody>
             </Field>
-            <Field Horizontal>
-                <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">Last name</FieldLabel>
-                <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
+            <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Last name</FieldLabel>
+                <FieldBody >
                     <Validation Validator="ValidationRule.IsNotEmpty">
-                        <TextEdit Placeholder="Enter last name" bind-Text="@_requestModel.LastName">
+                        <TextEdit Placeholder="Enter last name" @bind-Text="@RequestModel.LastName">
                             <Feedback>
                                 <ValidationNone></ValidationNone>
                                 <ValidationSuccess>Last name is good.</ValidationSuccess>
@@ -37,7 +37,7 @@
                 <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
                     <Addons>
                         <Addon AddonType="AddonType.Body">
-                            <DatePicker @ref="@_datePicker" TValue="DateOnly?"/>
+                            <DatePicker @ref="@_datePicker" TValue="DateTime" @bind-Date="@RequestModel.DateOfBirth"/>
                         </Addon>
                         <Addon AddonType="AddonType.End">
                             <Button Color="Color.Light" Clicked="@(() => _datePicker.ToggleAsync())">
@@ -52,7 +52,7 @@
                 <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">Email address</FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
                     <Validation Validator="ValidateEmail">
-                        <TextEdit>
+                        <TextEdit @bind-Text="@RequestModel.EmailAddress" Role="TextRole.Email">
                             <Feedback>
                                 <ValidationSuccess>Email is good.</ValidationSuccess>
                                 <ValidationError>Enter valid email address!</ValidationError>
@@ -65,7 +65,7 @@
                 <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">Phone number</FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
                     <Validation Validator="ValidatePhone">
-                        <TextEdit>
+                        <TextEdit @bind-Text="@RequestModel.PhoneNumber">
                             <Feedback>
                                 <ValidationSuccess>Phone number is good.</ValidationSuccess>
                                 <ValidationError>Enter valid phone number!</ValidationError>
@@ -78,7 +78,8 @@
             <Field Horizontal>
                 <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is2.OnDesktop">Address</FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is10.OnDesktop">
-                    <TextEdit/>
+                        <TextEdit @bind-Text="@RequestModel.Address">
+                        </TextEdit>
                 </FieldBody>
             </Field>
             <Field>
@@ -86,6 +87,6 @@
                 <Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit Clicked="OnSubmitClicked" Loading="@_isLoading">Create profile</Button>
                 <Button Color="Color.Secondary" To="/form">Cancel</Button>
             </Field>
-        </Form>
-    </CardBody>
-</Card>
+        </Validations>
+    </Column>
+</Row>

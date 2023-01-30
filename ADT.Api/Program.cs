@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileRequestModelValidator>();
 builder.Services.AddMapster();
+builder.Services.AddCors();
 builder.Services.AddApiVersioning(o =>
 {
     o.DefaultApiVersion = new ApiVersion(1.0);
@@ -34,6 +35,12 @@ builder.Services.AddDbContext<AdtContext>();
 var app = builder.Build();
 
 MethodTimeLogger.Logger = app.Logger;
+
+app.UseCors(cors => cors
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowAnyOrigin()
+);
 
 app.MapUserProfileEndpoints();
 
