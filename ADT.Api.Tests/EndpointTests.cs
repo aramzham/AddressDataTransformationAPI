@@ -1,4 +1,5 @@
 ﻿using ADT.Api.Extensions;
+using ADT.Api.Logging;
 using ADT.Api.Models.Domain;
 using ADT.Api.Repositories.Interfaces;
 using ADT.Common.Models.Request;
@@ -10,12 +11,13 @@ using FluentValidation;
 using FluentValidation.Results;
 using MapsterMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging;
 
 namespace ADT.Api.Tests;
 
 public class EndpointTests
 {
-    private static DateOnly _date = new(1990, 5, 26);
+    private static DateTime _date = new(1990, 5, 26);
 
     private readonly Mock<IValidator<UserProfileRequestModel>> _validatorMock = new();
     private readonly Mock<IUserProfileRepository> _userProfileRepositoryMock = new();
@@ -27,11 +29,11 @@ public class EndpointTests
     public async Task Add_WhenModelIsNotValid_ReturnValidationProblem()
     {
         // arrange
-        var requestModel = new UserProfileRequestModel(_fixture.Create<string>(), _fixture.Create<string>(),
-            _date, _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>());
+        var requestModel = _fixture.Build<UserProfileRequestModel>().With(x => x.DateOfBirth, _date).Create();
         var invalidResult = _fixture.Create<ValidationResult>();
         _validatorMock.Setup(x => x.ValidateAsync(requestModel, It.IsAny<CancellationToken>()))
             .ReturnsAsync(invalidResult);
+        MethodTimeLogger.Logger = Mock.Of<ILogger>();
 
         // act
         var result = (ProblemHttpResult)await WebApplicationExtensions.Add(_validatorMock.Object, requestModel,
