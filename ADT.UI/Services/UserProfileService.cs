@@ -29,6 +29,9 @@ public class UserProfileService : IUserProfileService
                 return await response.Content.ReadFromJsonAsync<IEnumerable<UserProfileResponseModel>>();
             }
 
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return Enumerable.Empty<UserProfileResponseModel>();
+
             var message = await response.Content.ReadAsStringAsync();
             throw new Exception($"Http status: {response.StatusCode} Message -{message}");
         }
@@ -45,7 +48,7 @@ public class UserProfileService : IUserProfileService
         {
             var response = await _httpClient.PostAsJsonAsync("/userProfile", requestModel);
 
-            if (response is not { IsSuccessStatusCode: true, StatusCode: HttpStatusCode.NoContent })
+            if (response is not { IsSuccessStatusCode: true, StatusCode: HttpStatusCode.Created })
             {
                 var message = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Http status: {response.StatusCode} Message -{message}");

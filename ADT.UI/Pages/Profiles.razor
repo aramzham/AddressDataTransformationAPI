@@ -4,7 +4,7 @@
 <Table Bordered Striped Hoverable>
     <TableHeader ThemeContrast="ThemeContrast.Dark">
         <TableRow>
-            <TableHeaderCell>#</TableHeaderCell>
+            @* <TableHeaderCell>#</TableHeaderCell> *@
             <TableHeaderCell>First name</TableHeaderCell>
             <TableHeaderCell>Last name</TableHeaderCell>
             <TableHeaderCell>Date of birth</TableHeaderCell>
@@ -18,7 +18,7 @@
         @foreach (var profile in _profiles)
         {
             <TableRow>
-                <TableRowHeader>1</TableRowHeader>
+                @* <TableRowHeader>1</TableRowHeader> *@
                 <TableRowCell>@profile.FirstName</TableRowCell>
                 <TableRowCell>@profile.LastName</TableRowCell>
                 <TableRowCell>@profile.DateOfBirth.ToString("yyyy-MM-dd")</TableRowCell>

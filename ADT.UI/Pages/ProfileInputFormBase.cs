@@ -8,12 +8,13 @@ namespace ADT.UI.Pages;
 
 public class ProfileInputFormBase : ComponentBase
 {
-    protected DatePicker<DateTime> _datePicker;
+    protected DatePicker<DateTime?> _datePicker;
     protected bool _isLoading;
     private readonly Regex _emailValidationRegex = new("^[a-z0-9]+[\\._]?[a-z0-9]+[@]\\w+[.]\\w{2,3}$", RegexOptions.Compiled);
     private readonly Regex _phoneValidationRegex = new(@"^\(\d{3}\)\d{3}-\d{4}$", RegexOptions.Compiled);
 
     [Inject] public IUserProfileService UserProfileService { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
     public UserProfileRequestModel RequestModel { get; set; } = new();
     public Validations ValidationsRef { get; set; }
 
@@ -43,6 +44,8 @@ public class ProfileInputFormBase : ComponentBase
             await ValidationsRef.ClearAll();
             
             _isLoading = false;
+            
+            NavigationManager.NavigateTo("/profiles");
         }
     }
 }

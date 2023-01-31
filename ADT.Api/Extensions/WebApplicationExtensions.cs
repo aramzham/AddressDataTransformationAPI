@@ -25,7 +25,7 @@ public static class WebApplicationExtensions
         
         app.MapPost("/userProfile", Add).WithApiVersionSet(versionSet).MapToApiVersion(_v1);
         app.MapGet("/userProfile/{id:guid}", GetById).WithApiVersionSet(versionSet).MapToApiVersion(_v2);
-        app.MapGet("/userProfile", GetAll);
+        app.MapGet("/userProfile", GetAll).WithApiVersionSet(versionSet).MapToApiVersion(_v1);
     }
     
     [Time]
