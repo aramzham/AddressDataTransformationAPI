@@ -10,3 +10,4 @@ Tech stack:
 - unit tests (xUnit, Moq, AutoFixture)
 - <a href="https://www.nuget.org/packages/Mapster/">Mapster</a> for mapping
 - <a href="https://github.com/Fody/MethodTimer">MethodTimer.Fody</a> for method execution time measuring
+- UI is a Blazor webassembly app using <a href="https://blazorise.com/docs">Blazorise</a> for components
