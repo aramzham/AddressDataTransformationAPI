@@ -1,5 +1,6 @@
 ﻿using ADT.Api.AddressDataTransformer;
 using ADT.Api.Data;
+using ADT.Api.Models;
 using ADT.Api.Models.Domain;
 using ADT.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,22 +16,42 @@ public class UserProfileRepository : BaseRepository, IUserProfileRepository
         _addressDataTransformingStrategy = addressDataTransformingStrategy;
     }
     
-    public async Task<UserProfile> Add(UserProfile userProfile)
+    public async Task<OperationResult<UserProfile>> Add(UserProfile userProfile)
     {
-        // this should have been put to some higher business logic
-        userProfile.Address = _addressDataTransformingStrategy.Transform(userProfile.Address);
+        try
+        {
+            // this should have been put to some higher business logic
+            userProfile.Address = _addressDataTransformingStrategy.Transform(userProfile.Address);
         
-        var entityEntry = await _context.AddAsync(userProfile);
-        return entityEntry.Entity;
+            var entityEntry = await _context.AddAsync(userProfile);
+            await SaveChanges();
+            
+            return new OperationResult<UserProfile>(entityEntry.Entity);
+        }
+        catch (Exception e)
+        {
+            return new OperationResult<UserProfile>(OperationResultStatus.BadRequest, e.Message);
+        }
     }
 
-    public async Task<IEnumerable<UserProfile>> GetAll()
+    public async Task<OperationResult<List<UserProfile>>> GetAll()
     {
-        return await _context.UserProfiles.ToListAsync();
+        try
+        {
+            var result = await _context.UserProfiles.ToListAsync();
+            return new OperationResult<List<UserProfile>>(result);
+        }
+        catch (Exception e)
+        {
+            return new OperationResult<List<UserProfile>>(OperationResultStatus.BadRequest, e.Message);
+        }
     }
 
-    public ValueTask<UserProfile?> GetById(Guid id)
+    public async Task<OperationResult<UserProfile?>> GetById(Guid id)
     {
-        return _context.UserProfiles.FindAsync(id);
+        var userProfile = await _context.UserProfiles.FindAsync(id);
+        return userProfile is null 
+            ? new OperationResult<UserProfile?>(OperationResultStatus.NotFound, "user profile not found") 
+            : new OperationResult<UserProfile?>(userProfile);
     }
 }

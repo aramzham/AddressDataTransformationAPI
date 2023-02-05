@@ -1,5 +1,6 @@
 ﻿using ADT.Api.Extensions;
 using ADT.Api.Logging;
+using ADT.Api.Models;
 using ADT.Api.Models.Domain;
 using ADT.Api.Repositories.Interfaces;
 using ADT.Common.Models.Request;
@@ -48,7 +49,8 @@ public class EndpointTests
     public async Task GetById_WhenNoRecordFound_ReturnNotFound(Guid id)
     {
         // arrange
-
+        _userProfileRepositoryMock.Setup(_ => _.GetById(It.IsAny<Guid>())).ReturnsAsync(new OperationResult<UserProfile?>(OperationResultStatus.NotFound, string.Empty));        
+        
         // act
         var result =
             (NotFound)await WebApplicationExtensions.GetById(id, _userProfileRepositoryMock.Object, _mapperMock.Object);
@@ -88,7 +90,7 @@ public class EndpointTests
     public async Task GetAll_WhenNoData_ReturnNotFound()
     {
         // arrange
-        _userProfileRepositoryMock.Setup(x => x.GetAll()).ReturnsAsync(Array.Empty<UserProfile>());
+        _userProfileRepositoryMock.Setup(x => x.GetAll()).ReturnsAsync(OperationResultStatus.NotFound);
 
         // act
         var result =
@@ -102,12 +104,12 @@ public class EndpointTests
     public async Task GetAll_WhenThereIsData_ReturnOk()
     {
         // arrange
-        var userProfiles = Enumerable.Range(0, _fixture.Create<int>()).Select(_ => _fixture.Build<UserProfile>().Without(x => x.DateOfBirth).Create());
+        var userProfiles = Enumerable.Range(0, _fixture.Create<int>()).Select(_ => _fixture.Build<UserProfile>().Without(x => x.DateOfBirth).Create()).ToList();
         _userProfileRepositoryMock.Setup(x => x.GetAll()).ReturnsAsync(userProfiles);
+        
         var responseModels = Enumerable.Range(0, _fixture.Create<int>()).Select(_ =>
-            new UserProfileResponseModel(_fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _date, _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>()));
-        _mapperMock.Setup(x => x.Map<IEnumerable<UserProfileResponseModel>>(It.IsAny<IEnumerable<UserProfile>>()))
-            .Returns(responseModels);
+            new UserProfileResponseModel(_fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _date, _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>())).ToList();
+        _mapperMock.Setup(x => x.Map<IEnumerable<UserProfileResponseModel>>(It.IsAny<IEnumerable<UserProfile>>())).Returns(responseModels);
 
         // act
         var result =

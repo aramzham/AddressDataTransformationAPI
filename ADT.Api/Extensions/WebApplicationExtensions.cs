@@ -41,19 +41,18 @@ public static class WebApplicationExtensions
 
         var userProfile = mapper.Map<UserProfile>(requestModel);
         
-        var createdUserProfile = await repository.Add(userProfile);
-        await repository.SaveChanges();
-        
-        return Results.Created($"/{createdUserProfile.Id}", createdUserProfile);
+        var result = repository.Add(userProfile);
+
+        return await result.ToActionResult();
     }
 
     internal static async Task<IResult> GetById(Guid id, IUserProfileRepository repository, IMapper mapper)
     {
-        var userProfile = await repository.GetById(id);
-        if (userProfile is null)
+        var result = await repository.GetById(id);
+        if (!result.IsSuccess)
             return Results.NotFound();
 
-        var response = mapper.Map<UserProfileResponseModel>(userProfile);
+        var response = mapper.Map<UserProfileResponseModel>(result.Data);
 
         return Results.Ok(response);
     }
@@ -61,10 +60,10 @@ public static class WebApplicationExtensions
     internal static async Task<IResult> GetAll(IUserProfileRepository repository, IMapper mapper)
     {
         var profiles = await repository.GetAll();
-        if (!profiles.Any())
+        if (!profiles.IsSuccess)
             return Results.NotFound();
 
-        var response = mapper.Map<IEnumerable<UserProfileResponseModel>>(profiles);
+        var response = mapper.Map<IEnumerable<UserProfileResponseModel>>(profiles.Data);
 
         return Results.Ok(response);
     }
